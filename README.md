@@ -35,4 +35,4 @@ Each folder contains:
 3.  **Visuals:** Screenshots of the automation canvas to see the architecture in action.
 
 ---
-[🔗 View my full Visual Portfolio on Notion](YOUR_NOTION_LINK_HERE)
+[🔗 View my full Visual Portfolio on Notion](https://www.notion.so/AI-Automation-Systems-30ff213e138a80debc4fd95ecdadf3b8)
