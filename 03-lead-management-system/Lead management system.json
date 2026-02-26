@@ -1,0 +1,1025 @@
+{
+  "name": "Lead management system",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "nvidia/nemotron-nano-9b-v2:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        -1744,
+        -176
+      ],
+      "id": "6f740c98-4830-44e0-8295-eb09a717d967",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "PU76yE389H0kHzcJ",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "shivani03112005@gmail.com",
+        "toEmail": "={{ $('Data cleanup / prep').item.json.Email }}",
+        "subject": "Your Support Request Has Been Received 🤍",
+        "html": "={{ $json.text }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -1440,
+        -144
+      ],
+      "id": "e418b1e9-5ef7-4825-98f4-1f0362e9b2d7",
+      "name": "lead  get instant message",
+      "webhookId": "a1e4024a-9f91-407b-a182-a73a77980645",
+      "credentials": {
+        "smtp": {
+          "id": "v06qQduf0HfEKUDA",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "vishwakarmashivani152@gmail.com",
+        "toEmail": "={{ $json.Email }}",
+        "subject": "Quick next step regarding your request",
+        "emailFormat": "text",
+        "text": "=Hi {{name}},\n\nThanks for reaching out. Based on what you shared, I believe we can help you achieve {{specific_goal_or_problem}}.\n\nThe fastest way to move forward is a quick 15-minute call where I can understand your exact needs and show you the best approach.\n\nYou can book a time here: {{booking_link}}\n\nIf you prefer, you can also reply to this email with:\n• your main goal\n• timeline\n• any specific questions\n\nI’ll personally review and guide you on the best next step.\n\nLooking forward to helping you.\n\nBest regards,\nShivani\nLife Coach & Productivity Mentor\n",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -592,
+        112
+      ],
+      "id": "02b800b9-adf0-4fbd-9b7c-e5b8334f2941",
+      "name": "instant response to lead if hot",
+      "webhookId": "3396c94f-f1cd-4a74-ba32-b04d089dc31b",
+      "credentials": {
+        "smtp": {
+          "id": "v06qQduf0HfEKUDA",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "shivani03112005@gmail.com",
+        "toEmail": "=vishwakarmashivani152@gmail.com",
+        "subject": "🔥 HOT LEAD ALERT — Immediate Action Needed",
+        "html": "=<div style=\"font-family: Arial, sans-serif; color:#222; line-height:1.6; max-width:600px;\">\n\n  <h2>🚨 HOT Lead Alert!</h2>\n  <hr/>\n <!-- LEAD QUALIFICATION + ACTION SECTION -->\n  <h3>📊 Lead Qualification & Next Steps</h3>\n\n  <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\"\n         style=\"border-collapse: collapse; background:#fff; border:1px solid #ddd;\">\n    <tr>\n      <td style=\"font-weight:bold; width:40%;\">Lead Score</td>\n      <td>{{$json[\"lead_score\"]}}</td>\n    </tr>\n    <tr>\n      <td style=\"font-weight:bold;\">Category</td>\n      <td>{{$json[\"lead_category\"]}}</td>\n    </tr>\n    <tr>\n      \n    <tr>\n      <td style=\"font-weight:bold;\">Recommended Action</td>\n      <td>{{$json[\"recommended_action\"]}}</td>\n    </tr>\n  </table>\n\n  <br/>\n  <hr/>\n\n  <!-- PROBLEM SECTION -->\n  <h3>🧩 Requirement / Problem</h3>\n  <div style=\"background:#f8f8f8; padding:12px; border-left:4px solid #ff6b00;\">\n    {{$json[\"Describe your problem or requirement briefly\"]}}\n  </div>\n\n  <br/>\n\n  <!-- LEAD DETAILS SECTION -->\n  <h3>👤 Lead Details</h3>\n\n  <table width=\"100%\" cellpadding=\"8\" cellspacing=\"0\" \n         style=\"border-collapse: collapse; background:#f9fafb; border:1px solid #ddd;\">\n    <tr>\n      <td style=\"font-weight:bold; width:30%;\">Name</td>\n      <td>{{$json[\"First name\"]}} {{$json[\"Last name\"]}}</td>\n    </tr>\n    <tr>\n      <td style=\"font-weight:bold;\">Email</td>\n      <td>{{$json[\"Email\"]}}</td>\n    </tr>\n    <tr>\n      <td style=\"font-weight:bold;\">Phone</td>\n      <td>{{$json[\"Phone Number\"]}}</td>\n    </tr>\n<td style=\"font-weight:bold;\">Budget Range</td>\n      <td>{{$json[\"Budget range\"]}}</td>\n    </tr>\n    <tr>\n      <td style=\"font-weight:bold;\">Urgency / Timeline</td>\n      <td>{{$json[\"Urgency / Timeline\"]}}</td>\n    </tr>\n  </table>\n\n  <br/>\n\n\n\n \n\n  \n</div>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -592,
+        384
+      ],
+      "id": "c899d0b7-dd01-4837-bab8-af55886f13b1",
+      "name": "notifying owner through email",
+      "webhookId": "6ec0891b-bf6b-4cc6-9057-57c61c8d0f48",
+      "credentials": {
+        "smtp": {
+          "id": "v06qQduf0HfEKUDA",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "C0AG12X531B",
+          "mode": "id"
+        },
+        "text": "=🚀 *HOT LEAD DETECTED* 🚀\n──────────────────────────────\n👤 *PROSPECT:* {{ $json[\"First name\"] }} {{ $json[\"Last name\"] }}\n📧 *EMAIL:* {{ $json[\"Email\"] }}\n📞 *PHONE:* {{ $json[\"Phone Number\"] }}\n\n📝 *REQUIREMENT:*\n> \"{{ $json[\"Describe your problem or requirement briefly\"] }}\"\n\n💰 *BUDGET:* {{ $json[\"Budget range\"] }}\n⏳ *TIMELINE:* {{ $json[\"Urgency / Timeline\"] }}\n🎯 *SCORE:* {{ $json[\"lead_score\"] }} ({{ $json[\"lead_category\"] }})\n\n🛠️ *RECO_ACTION:* {{ $json[\"recommended_action\"] }}\n──────────────────────────────\n🕒 _Act fast—this lead is marked as 'Immediately'!_",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        -400,
+        256
+      ],
+      "id": "350d870f-0030-42c4-a4f6-0ad911f3cf9e",
+      "name": "notifying owner through slack",
+      "webhookId": "85dafd8c-74e0-4d89-9f62-9d03c3797270",
+      "credentials": {
+        "slackApi": {
+          "id": "JmxROPz8RTP7JbYn",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "email": "={{ $('Decision Engine').item.json.Email }}",
+        "additionalFields": {
+          "firstName": "={{ $('Decision Engine').item.json[\"First name\"] }}",
+          "lastName": "={{ $('Decision Engine').item.json[\"Last name\"] }}",
+          "leadStatus": "OPEN_DEAL",
+          "phoneNumber": "={{ $('Decision Engine').item.json[\"Phone Number\"] }}",
+          "workEmail": "={{ $('Decision Engine').item.json.Email }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        -784,
+        560
+      ],
+      "id": "bce276b0-41e9-445b-8648-d048513bc2e7",
+      "name": "Create or update a contact",
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "zRqJteTFcc1z4LbS",
+          "name": "HubSpot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 1
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -416,
+        560
+      ],
+      "id": "f9cbb9d1-05ac-4d31-985d-8b259e66009e",
+      "name": "Wait",
+      "webhookId": "0d4a191f-8436-41c7-bedb-639c105f1929"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "18MADGk-KNw_sa3DJMLP60ZZfY-P3K_ze62Jl0iWJ-DQ",
+          "mode": "list",
+          "cachedResultName": "Capturing lead data ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18MADGk-KNw_sa3DJMLP60ZZfY-P3K_ze62Jl0iWJ-DQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 821159970,
+          "mode": "list",
+          "cachedResultName": "cold leads ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18MADGk-KNw_sa3DJMLP60ZZfY-P3K_ze62Jl0iWJ-DQ/edit#gid=821159970"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead score ": "={{ $json.lead_score }}",
+            "lead category ": "={{ $json.lead_category }}",
+            "Respondent ID": "={{ $('Lead Entry Point').item.json.body.data.respondentId }}"
+          },
+          "matchingColumns": [
+            "Respondent ID"
+          ],
+          "schema": [
+            {
+              "id": "Submission ID",
+              "displayName": "Submission ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Respondent ID",
+              "displayName": "Respondent ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Submitted at",
+              "displayName": "Submitted at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "First name",
+              "displayName": "First name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last name",
+              "displayName": "Last name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Describe your problem or requirement briefly",
+              "displayName": "Describe your problem or requirement briefly",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget range",
+              "displayName": "Budget range",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Urgency / Timeline",
+              "displayName": "Urgency / Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lead score ",
+              "displayName": "lead score ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "lead category ",
+              "displayName": "lead category ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -944,
+        -48
+      ],
+      "id": "045b0e28-fead-4c06-8f54-215f7329763a",
+      "name": "Append or update row in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "dN8fF3iq7w0VNBUI",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-qualification",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -2176,
+        64
+      ],
+      "id": "d3aa00dc-6342-447b-99cb-d6b808ffae0e",
+      "name": "Lead Entry Point",
+      "webhookId": "308c938a-377b-4a22-af16-3684d3b8ee85"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst results = [];\n\nfor (const item of items) {\n  // 1. Get the 'fields' array from the debug path provided\n  const rawFieldsArray = item.json.body?.data?.fields || [];\n  \n  // 2. Check if the first element is that giant string\n  if (rawFieldsArray.length > 0 && typeof rawFieldsArray[0] === 'string') {\n    try {\n      // Wrap the string in [ ] to make it a valid JSON array and parse it\n      const fixedFields = JSON.parse(`[${rawFieldsArray[0]}]`);\n      const structuredData = {};\n\n      fixedFields.forEach(field => {\n        const label = field.label;\n        let value = field.value;\n\n        // Handle Multiple Choice mapping\n        if (field.type === \"MULTIPLE_CHOICE\" && Array.isArray(value)) {\n          const options = field.options || [];\n          const readableValues = value.map(id => {\n            const foundOption = options.find(opt => opt.id === id);\n            return foundOption ? foundOption.text : id;\n          });\n          value = readableValues.length === 1 ? readableValues[0] : readableValues;\n        }\n\n        if (label) {\n          structuredData[label] = value;\n        }\n      });\n\n      results.push({ json: structuredData });\n    } catch (e) {\n      results.push({ json: { error: \"Failed to parse fields string\", details: e.message } });\n    }\n  }\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1984,
+        48
+      ],
+      "id": "2aae9e97-de4c-4231-8ae9-e784cb9804cf",
+      "name": "Data cleanup / prep"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const data = $json;\n\nlet score = 0;\nlet category = \"COLD ❄️\";\n\n// Budget scoring\nconst budget = data[\"Budget range\"] || \"\";\n\nif (budget.includes(\"2000\") || budget.includes(\"Above\")) {\n  score += 3;\n} else if (budget.includes(\"500\")) {\n  score += 2;\n} else if (budget.includes(\"Below\")) {\n  score += 1;\n}\n\n// Timeline scoring\nconst timeline = data[\"Urgency / Timeline\"] || \"\";\n\nif (timeline.toLowerCase().includes(\"immediately\")) {\n  score += 3;\n} else if (timeline.toLowerCase().includes(\"1 week\")) {\n  score += 2;\n} else if (timeline.toLowerCase().includes(\"1 month\")) {\n  score += 1;\n} else if (timeline.toLowerCase().includes(\"exploring\")) {\n  score += 0; // very low urgency\n}\n\n// Problem clarity scoring\nconst problem = data[\"Describe your problem or requirement briefly\"] || \"\";\n\nif (problem.length > 50) {\n  score += 2;\n} else {\n  score += 1;\n}\n\n// Final category\nif (score >= 6) {\n  category = \"HOT 🔥\";\n} else if (score >= 4) {\n  category = \"WARM 🌤️\";\n} else {\n  category = \"COLD ❄️\";\n}\n\n// Add recommended action based on category\nlet recommended_action = \"\";\n\nif (category === \"HOT 🔥\") {\n  recommended_action = `Contact lead fast → Review details → Qualify → Book call → Update & follow up`\n;\n\n} else if (category === \"WARM 🌤️\") {\n  recommended_action = \"Add to CRM and follow up within 2–3 days\";\n\n} else if (category === \"COLD ❄️\") {\n  recommended_action = \"Add to Newsletter list + Log in Google Sheets\";\n}\n\nreturn {\n  ...data,\n  lead_score: `${score}/8`,\n  lead_category: category,\n  recommended_action: recommended_action\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1744,
+        224
+      ],
+      "id": "7a90f62c-9fb7-4fab-80bc-13bc924f4761",
+      "name": "Lead Qualification"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.lead_category }}",
+                    "rightValue": "COLD ❄️",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "bef53d4a-c7b5-4837-91b6-2946a58ab90a"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "COLD"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "3bcf2a50-42e1-4f44-9783-abe7e7f1ef47",
+                    "leftValue": "={{ $json.lead_category }}",
+                    "rightValue": "HOT 🔥",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "HOT"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "643d93f1-3c75-44c0-b26f-7969d1278ef2",
+                    "leftValue": "={{ $json.lead_category }}",
+                    "rightValue": "WARM 🌤️",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "WARM"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -1216,
+        208
+      ],
+      "id": "5e7311af-a074-4a58-9adc-17e2a367d3ec",
+      "name": "Decision Engine"
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "#new-channel",
+          "mode": "name"
+        },
+        "text": "error ocurred ",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        -1440,
+        48
+      ],
+      "id": "a68088a2-207b-4c47-b8a0-5321e94a4177",
+      "name": "error occured",
+      "webhookId": "3932fb7b-0d53-4799-9e2a-a6f4bcd213bc",
+      "credentials": {
+        "slackApi": {
+          "id": "JmxROPz8RTP7JbYn",
+          "name": "Slack account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "appToken",
+        "operation": "search",
+        "filterGroupsUi": {
+          "filterGroupsValues": [
+            {
+              "filtersUi": {
+                "filterValues": [
+                  {
+                    "propertyName": "email|string",
+                    "value": "={{ $json.Email }}"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.hubspot",
+      "typeVersion": 2.2,
+      "position": [
+        -1296,
+        528
+      ],
+      "id": "5a905c5a-dfdc-4d57-9970-9d49dbeb6f50",
+      "name": "Search Contact by email",
+      "retryOnFail": false,
+      "alwaysOutputData": true,
+      "credentials": {
+        "hubspotAppToken": {
+          "id": "zRqJteTFcc1z4LbS",
+          "name": "HubSpot account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "482b265d-e61b-4bad-ab4a-18416e147b29",
+              "leftValue": "={{$json.id}}",
+              "rightValue": "is not empty",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        -1024,
+        528
+      ],
+      "id": "c0d1c34e-c820-431b-b910-2830ed5edb89",
+      "name": "If contact exists"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an AI Life Coach assistant writing an instant email reply to a new lead who just submitted a form.\n\nYour goal:\nWrite a short, warm, supportive first response that feels empathetic, professional, and encouraging.\n\nLead Details:\nName: {{$json[\"First name\"]}}\nProblem: {{$json[\"Describe your problem or requirement briefly\"]}}\nBudget: {{$json[\"Budget range\"]}}\nTimeline: {{$json[\"Urgency / Timeline\"]}}\n\n\nInstructions:\n\nReturn ONLY pure HTML\n\nDo NOT include code blocks\n\nUse inline CSS only\n\nKeep the design simple, clean, and friendly\n\nKeep the email short (4–6 sentences max)\n\nTone must feel like a caring Life Coach (supportive, calm, understanding)\n\nAcknowledge the lead’s problem emotionally\n\nInclude ONE gentle follow-up question\n\nDo NOT include placeholders or brackets\n\nDo NOT sound salesy or technical\n\nEnd the email EXACTLY with this signature:\n\nBest regards,\nShivani\nLife Coach & Productivity Mentor",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -1792,
+        16
+      ],
+      "id": "ca1a4180-8bd7-46bb-9285-0342045cab8e",
+      "name": "Instant acknowledgement message",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "18MADGk-KNw_sa3DJMLP60ZZfY-P3K_ze62Jl0iWJ-DQ",
+          "mode": "list",
+          "cachedResultName": "Capturing lead data ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18MADGk-KNw_sa3DJMLP60ZZfY-P3K_ze62Jl0iWJ-DQ/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "lead qualification stored ",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/18MADGk-KNw_sa3DJMLP60ZZfY-P3K_ze62Jl0iWJ-DQ/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "First name": "={{ $json[\"First name\"] }}",
+            "Last name": "={{ $json[\"Last name\"] }}",
+            "Email": "={{ $json.Email }}",
+            "Phone Number": "={{ $json[\"Phone Number\"] }}",
+            "Describe your problem or requirement briefly": "={{ $json[\"Describe your problem or requirement briefly\"] }}",
+            "Budget range": "={{ $json[\"Budget range\"] }}",
+            "Urgency / Timeline": "={{ $json[\"Urgency / Timeline\"] }}",
+            "lead score ": "={{ $json.lead_score }}",
+            "lead category ": "={{ $json.lead_category }}",
+            " Respondent ID": "={{ $('Lead Entry Point').item.json.body.data.respondentId }}"
+          },
+          "matchingColumns": [
+            " Respondent ID"
+          ],
+          "schema": [
+            {
+              "id": " Respondent ID",
+              "displayName": " Respondent ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "First name",
+              "displayName": "First name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Last name",
+              "displayName": "Last name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Describe your problem or requirement briefly",
+              "displayName": "Describe your problem or requirement briefly",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Budget range",
+              "displayName": "Budget range",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Urgency / Timeline",
+              "displayName": "Urgency / Timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lead score ",
+              "displayName": "lead score ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lead category ",
+              "displayName": "lead category ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -1504,
+        240
+      ],
+      "id": "d7cc2dd0-5463-42be-923e-d440c4270052",
+      "name": "Save Lead Qualification Data",
+      "credentials": {
+        "googleApi": {
+          "id": "dN8fF3iq7w0VNBUI",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "vishwakarmashivani152@gmail.com",
+        "toEmail": "={{ $json.properties.email.value }}",
+        "subject": "Following up on your request",
+        "emailFormat": "text",
+        "text": "=Hi {{ $('Decision Engine').item.json['First name'] }},\n\nI’m reaching out because I saw your note about struggling with {{ $('Decision Engine').item.json['Describe your problem or requirement briefly'] }}.\n\nSince you mentioned needing a solution {{ $('Decision Engine').item.json['Urgency / Timeline'] }}, I wanted to see if you had a few minutes this week to chat about how we can help take that stress off your plate.\n\nFeel free to reply here or book a quick time on my calendar .\n\nBest,\n\nShivani",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        -192,
+        704
+      ],
+      "id": "6356427c-1d9c-4f71-bb0a-ea00247e65e5",
+      "name": "follow-up   Message",
+      "webhookId": "d998bcf1-25f9-4188-bff4-d892cd90bc4e",
+      "credentials": {
+        "smtp": {
+          "id": "v06qQduf0HfEKUDA",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "select": "channel",
+        "channelId": {
+          "__rl": true,
+          "value": "#new-channel",
+          "mode": "name"
+        },
+        "text": "hubspot error ",
+        "otherOptions": {}
+      },
+      "type": "n8n-nodes-base.slack",
+      "typeVersion": 2.4,
+      "position": [
+        -1120,
+        672
+      ],
+      "id": "0a23aefd-8ac9-49b1-b2e5-e66526d0ad14",
+      "name": "error occured1",
+      "webhookId": "940b9e7a-75be-4a67-a435-e6abcfe64e4f",
+      "credentials": {
+        "slackApi": {
+          "id": "JmxROPz8RTP7JbYn",
+          "name": "Slack account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Lead Entry Point": [
+      {
+        "json": {
+          "headers": {
+            "host": "threatened-interpretation-cdna-homeland.trycloudflare.com",
+            "user-agent": "Make/production",
+            "content-length": "1721",
+            "accept": "application/json, text/plain, */*",
+            "accept-encoding": "gzip",
+            "cdn-loop": "cloudflare; loops=1; subreqs=1",
+            "cf-connecting-ip": "54.75.157.176",
+            "cf-ew-via": "15",
+            "cf-ipcountry": "IE",
+            "cf-ray": "9d41049dd5c9c20e-SIN",
+            "cf-visitor": "{\"scheme\":\"https\"}",
+            "cf-warp-tag-id": "ccb9b6e1-2579-4aa8-9396-8fb1efeef2c3",
+            "cf-worker": "trycloudflare.com",
+            "connection": "keep-alive",
+            "content-type": "application/json",
+            "traceparent": "00-69a07cf50000000071fb4924c25778ca-71fb4924c25778ca-00",
+            "tracestate": "dd=t.tid:69a07cf500000000;t.dm:-1;s:0;p:71fb4924c25778ca",
+            "x-datadog-parent-id": "8213238767668394186",
+            "x-datadog-sampling-priority": "0",
+            "x-datadog-tags": "_dd.p.tid=69a07cf500000000",
+            "x-datadog-trace-id": "8213238767668394186",
+            "x-forwarded-for": "54.75.157.176",
+            "x-forwarded-proto": "https"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "data": {
+              "fields": [
+                "{\"key\":\"question_V0kRNE\",\"label\":\"First name\",\"type\":\"INPUT_TEXT\",\"value\":\"shivani\"}, {\"key\":\"question_P6aMrd\",\"label\":\"Last name\",\"type\":\"INPUT_TEXT\",\"value\":\"vish\"}, {\"key\":\"question_EX4j6q\",\"label\":\"Email\",\"type\":\"INPUT_EMAIL\",\"value\":\"shivani03112005@gmail.com\"}, {\"key\":\"question_r6xNY5\",\"label\":\"Phone Number\",\"type\":\"INPUT_PHONE_NUMBER\",\"value\":\"+919876543210\"}, {\"key\":\"question_vNDXe0\",\"label\":\"Describe your problem or requirement briefly\",\"type\":\"TEXTAREA\",\"value\":\"I struggle with work-life balance. I work long hours.\\n\"}, {\"key\":\"question_LdKD7v\",\"label\":\"Budget range\",\"type\":\"MULTIPLE_CHOICE\",\"value\":[\"b4cb954e-0c10-46f6-8033-c0a80c16ef32\"],\"options\":[{\"id\":\"b4cb954e-0c10-46f6-8033-c0a80c16ef32\",\"text\":\"Below $100\"},{\"id\":\"08eb41f7-0719-4ad5-a191-c8cae1a48ddc\",\"text\":\"$100 – $500\"},{\"id\":\"588a31c6-8fa3-4da5-a32f-1af30c8168f4\",\"text\":\"$500 – $2000\"},{\"id\":\"387bbe43-dabd-4d09-969f-295351650dd5\",\"text\":\"$2000+\"}]}, {\"key\":\"question_pLoeyJ\",\"label\":\"Urgency / Timeline\",\"type\":\"MULTIPLE_CHOICE\",\"value\":[\"0463c3ec-9e87-4dd3-a84f-6670f0d750be\"],\"options\":[{\"id\":\"04e96f55-444d-43e9-bff0-88e40a84260f\",\"text\":\"Immediately\"},{\"id\":\"0463c3ec-9e87-4dd3-a84f-6670f0d750be\",\"text\":\"Within 1 week\"},{\"id\":\"cd75aecf-0bc4-4329-9f2c-e71db03d3160\",\"text\":\"Within 1 month\"},{\"id\":\"8dfeeb61-54fb-4676-91fc-f89623474a7e\",\"text\":\"just exploring\"}]}"
+              ],
+              "formId": "2EP9Lj",
+              "formName": "Lead Inquiry Form",
+              "createdAt": "2026-02-26T17:03:48.428Z",
+              "responseId": "dWBy92q",
+              "respondentId": "eqAAybo",
+              "submissionId": "dWBy92q"
+            }
+          },
+          "webhookUrl": "http://localhost:5678/webhook/lead-qualification",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Instant acknowledgement message",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "notifying owner through slack": {
+      "main": [
+        []
+      ]
+    },
+    "Create or update a contact": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "follow-up   Message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Entry Point": {
+      "main": [
+        [
+          {
+            "node": "Data cleanup / prep",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data cleanup / prep": {
+      "main": [
+        [
+          {
+            "node": "Lead Qualification",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Instant acknowledgement message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Qualification": {
+      "main": [
+        [
+          {
+            "node": "Save Lead Qualification Data",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Decision Engine",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Decision Engine": {
+      "main": [
+        [
+          {
+            "node": "Append or update row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "notifying owner through slack",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "instant response to lead if hot",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "notifying owner through email",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Search Contact by email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search Contact by email": {
+      "main": [
+        [
+          {
+            "node": "If contact exists",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error occured1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If contact exists": {
+      "main": [
+        [
+          {
+            "node": "Create or update a contact",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create or update a contact",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Instant acknowledgement message": {
+      "main": [
+        [
+          {
+            "node": "lead  get instant message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "error occured",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Lead Qualification Data": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "ff67f520-38aa-4011-b292-4f10d9b9dc48",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "94c313174ea1c254bf84c16eaaa82cd117a864c2d5c1a079ab7a0760c8fe35fc"
+  },
+  "id": "Ji2fuBl7OgHjsAHz",
+  "tags": []
+}
