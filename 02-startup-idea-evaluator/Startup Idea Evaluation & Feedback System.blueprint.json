@@ -1,0 +1,1584 @@
+{
+    "name": "Startup Idea Evaluation & Feedback System",
+    "flow": [
+        {
+            "id": 17,
+            "module": "gateway:CustomWebHook",
+            "version": 1,
+            "parameters": {
+                "hook": 2365932,
+                "maxResults": 1
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": -2440,
+                    "y": -371,
+                    "name": "Founder Idea Submission Trigger"
+                },
+                "restore": {
+                    "parameters": {
+                        "hook": {
+                            "data": {
+                                "editable": "true"
+                            },
+                            "label": "startup_evaluator"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "hook",
+                        "type": "hook:gateway-webhook",
+                        "label": "Webhook",
+                        "required": true
+                    },
+                    {
+                        "name": "maxResults",
+                        "type": "number",
+                        "label": "Maximum number of results"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 23,
+            "module": "ai-agent:RunAnAIAgent",
+            "version": 0,
+            "parameters": {},
+            "mapper": {
+                "agent": "2456386c-03de-4ad9-9ed6-1ff7c99e87b4",
+                "timeout": "",
+                "messages": [
+                    "Evaluate the startup using your VC evaluation framework.\r\n\r\nStartup details:\r\nIndustry: {{17.industry}}\r\nProduct / Service: {{17.product_service}}\nTarget Customers: {{17.target_customers}}\r\ndifferentiation: {{17.differentiation}}\nPricing Model: {{17.pricing_model}}\r\nStage: {{17.stage}}\r\nTeam Size: {{17.team_size}}\r\nRevenue: {{17.current_revenue}}\r\nCountry: {{17.country}}\r\nCompetitors: {{17.competitors}}\nwillingness to pay: {{17.willingness_to_pay}}\n\r\nReturn the evaluation strictly in the required JSON format.\n\n## **REQUIRED JSON STRUCTURE**\r\n{\r\n  \"scores\": {\r\n    \"market_score\": 0.0,\r\n    \"execution_score\": 0.0,\r\n    \"monetization_score\": 0.0,\r\n    \"risk_score\": 0.0,\r\n    \"overall_score\": 0.0\r\n  },\r\n  \"success_probability\": \"\",\r\n  \"verdict\": \"\",\r\n\r\n  \"uncomfortable_truth\": \"\",\r\n\r\n  \"jobs_to_be_done_reality\": {\r\n    \"what_they_say\": \"\",\r\n    \"what_they_actually_want\": [],\r\n    \"implication\": \"\"\r\n  },\r\n\r\n  \"market_reality\": {\r\n    \"market_size_commentary\": \"\",\r\n    \"year_1_customer_potential\": \"\",\r\n    \"free_alternatives\": [],\r\n    \"conversion_expectation\": \"\",\r\n    \"revenue_year_1_realistic\": \"\"\r\n  },\r\n\r\n  \"value_gap_analysis\": {\r\n    \"exists\": true,\r\n    \"description\": \"\",\r\n    \"mitigation\": \"\"\r\n  },\r\n\r\n  \"risk_assessment\": [\r\n    {\r\n      \"risk\": \"\",\r\n      \"severity\": \"HIGH/MEDIUM/LOW\",\r\n      \"why_it_matters\": \"\",\r\n      \"mitigation\": \"\"\r\n    }\r\n  ],\r\n\r\n  \"pricing_intelligence\": {\r\n    \"benchmarks\": \"\",\r\n    \"recommended_price\": \"\",\r\n    \"expected_conversion_band\": \"\",\r\n    \"freemium_trap_warning\": \"\"\r\n  },\r\n\r\n  \"validation_plan_30_days\": {\r\n    \"week_1\": [],\r\n    \"week_2_3\": [],\r\n    \"decision_point\": {\r\n      \"kill_criteria\": [],\r\n      \"proceed_criteria\": []\r\n    }\r\n  },\r\n\r\n  \"six_month_outlook\": {\r\n    \"only_if_validation_passes\": [],\r\n    \"metrics_to_track\": []\r\n  },\r\n\r\n  \"email_preview\": {\r\n    \"purpose\": \"Email body summary only — no new analysis\",\r\n    \"summary\": \"\",\r\n    \"key_insight\": \"\",\r\n    \"primary_risk\": \"\",\r\n    \"next_step\": \"\"\r\n  }\r\n}\r\n\r\n"
+                ],
+                "threadID": "{{17.name}} {{17.email}} {{17.phone}}",
+                "outputType": "",
+                "additionalSystemPrompt": ""
+            },
+            "metadata": {
+                "designer": {
+                    "x": -2176,
+                    "y": -272,
+                    "name": "Idea Analysis & Scoring Engine"
+                },
+                "restore": {
+                    "expect": {
+                        "agent": {
+                            "label": "startup evaluation agent"
+                        },
+                        "messages": {
+                            "mode": "chose",
+                            "items": [
+                                null
+                            ]
+                        },
+                        "outputType": {
+                            "label": "Empty"
+                        }
+                    }
+                },
+                "expect": [
+                    {
+                        "name": "agent",
+                        "type": "aiagent",
+                        "label": "Agent",
+                        "required": true
+                    },
+                    {
+                        "name": "threadID",
+                        "type": "text",
+                        "label": "Thread ID",
+                        "validate": {
+                            "max": 256
+                        }
+                    },
+                    {
+                        "name": "additionalSystemPrompt",
+                        "type": "text",
+                        "label": "Additional system instructions"
+                    },
+                    {
+                        "name": "messages",
+                        "spec": {
+                            "name": "value",
+                            "type": "text",
+                            "label": "Message"
+                        },
+                        "type": "array",
+                        "label": "Messages"
+                    },
+                    {
+                        "name": "timeout",
+                        "type": "number",
+                        "label": "Timeout",
+                        "validate": {
+                            "max": 600,
+                            "min": 120
+                        }
+                    },
+                    {
+                        "name": "outputType",
+                        "type": "select",
+                        "label": "Output schema",
+                        "validate": {
+                            "enum": [
+                                "text",
+                                "make-schema"
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "id": 22,
+            "module": "json:ParseJSON",
+            "version": 1,
+            "parameters": {
+                "type": 294313
+            },
+            "mapper": {
+                "json": "{{23.response}}"
+            },
+            "metadata": {
+                "designer": {
+                    "x": -1968,
+                    "y": -561,
+                    "name": "Normalize Evaluation Output"
+                },
+                "restore": {
+                    "parameters": {
+                        "type": {
+                            "label": "My data structure"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "type",
+                        "type": "udt",
+                        "label": "Data structure"
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "json",
+                        "type": "text",
+                        "label": "JSON string",
+                        "required": true
+                    }
+                ],
+                "interface": [
+                    {
+                        "help": "",
+                        "name": "scores",
+                        "spec": [
+                            {
+                                "help": "",
+                                "name": "market_score",
+                                "type": "number",
+                                "label": "Market score",
+                                "default": null,
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "execution_score",
+                                "type": "number",
+                                "label": "Execution score",
+                                "default": null,
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "monetization_score",
+                                "type": "number",
+                                "label": "Monetization score",
+                                "default": null,
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "risk_score",
+                                "type": "number",
+                                "label": "Risk score",
+                                "default": null,
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "overall_score",
+                                "type": "number",
+                                "label": "Overall score",
+                                "default": null,
+                                "required": false
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Scores",
+                        "required": false
+                    },
+                    {
+                        "help": "",
+                        "name": "success_probability",
+                        "type": "text",
+                        "label": "Success probability",
+                        "default": null,
+                        "required": false,
+                        "multiline": false
+                    },
+                    {
+                        "help": "",
+                        "name": "verdict",
+                        "type": "text",
+                        "label": "Verdict",
+                        "default": null,
+                        "required": false,
+                        "multiline": false
+                    },
+                    {
+                        "help": "",
+                        "name": "uncomfortable_truth",
+                        "type": "text",
+                        "label": "Uncomfortable truth",
+                        "default": null,
+                        "required": false,
+                        "multiline": false
+                    },
+                    {
+                        "help": "",
+                        "name": "jobs_to_be_done_reality",
+                        "spec": [
+                            {
+                                "help": "",
+                                "name": "what_they_say",
+                                "type": "text",
+                                "label": "What they say",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "what_they_actually_want",
+                                "spec": {
+                                    "type": "text",
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                },
+                                "type": "array",
+                                "label": "What they actually want",
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "implication",
+                                "type": "text",
+                                "label": "Implication",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Jobs to be done reality",
+                        "required": false
+                    },
+                    {
+                        "help": "",
+                        "name": "market_reality",
+                        "spec": [
+                            {
+                                "help": "",
+                                "name": "market_size_commentary",
+                                "type": "text",
+                                "label": "Market size commentary",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "year_1_customer_potential",
+                                "type": "text",
+                                "label": "Year 1 customer potential",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "free_alternatives",
+                                "spec": {
+                                    "type": "text",
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                },
+                                "type": "array",
+                                "label": "Free alternatives",
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "conversion_expectation",
+                                "type": "text",
+                                "label": "Conversion expectation",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "revenue_year_1_realistic",
+                                "type": "text",
+                                "label": "Revenue year 1 realistic",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Market reality",
+                        "required": false
+                    },
+                    {
+                        "help": "",
+                        "name": "value_gap_analysis",
+                        "spec": [
+                            {
+                                "help": "",
+                                "name": "exists",
+                                "type": "boolean",
+                                "label": "Exists",
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "description",
+                                "type": "text",
+                                "label": "Description",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "mitigation",
+                                "type": "text",
+                                "label": "Mitigation",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Value gap analysis",
+                        "required": false
+                    },
+                    {
+                        "help": "",
+                        "name": "risk_assessment",
+                        "spec": {
+                            "spec": [
+                                {
+                                    "help": "",
+                                    "name": "risk",
+                                    "type": "text",
+                                    "label": null,
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                },
+                                {
+                                    "help": "",
+                                    "name": "severity",
+                                    "type": "text",
+                                    "label": null,
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                },
+                                {
+                                    "help": "",
+                                    "name": "why_it_matters",
+                                    "type": "text",
+                                    "label": null,
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                },
+                                {
+                                    "help": "",
+                                    "name": "mitigation",
+                                    "type": "text",
+                                    "label": null,
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                }
+                            ],
+                            "type": "collection",
+                            "required": false
+                        },
+                        "type": "array",
+                        "label": "Risk assessment",
+                        "required": false
+                    },
+                    {
+                        "help": "",
+                        "name": "pricing_intelligence",
+                        "spec": [
+                            {
+                                "help": "",
+                                "name": "benchmarks",
+                                "type": "text",
+                                "label": "Benchmarks",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "recommended_price",
+                                "type": "text",
+                                "label": "Recommended price",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "expected_conversion_band",
+                                "type": "text",
+                                "label": "Expected conversion band",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "freemium_trap_warning",
+                                "type": "text",
+                                "label": "Freemium trap warning",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Pricing intelligence",
+                        "required": false
+                    },
+                    {
+                        "help": "",
+                        "name": "validation_plan_30_days",
+                        "spec": [
+                            {
+                                "help": "",
+                                "name": "week_1",
+                                "spec": {
+                                    "type": "text",
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                },
+                                "type": "array",
+                                "label": "Week 1",
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "week_2_3",
+                                "spec": {
+                                    "type": "text",
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                },
+                                "type": "array",
+                                "label": "Week 2 3",
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "decision_point",
+                                "spec": [
+                                    {
+                                        "help": "",
+                                        "name": "kill_criteria",
+                                        "spec": {
+                                            "type": "text",
+                                            "default": null,
+                                            "required": false,
+                                            "multiline": false
+                                        },
+                                        "type": "array",
+                                        "label": "Kill criteria",
+                                        "required": false
+                                    },
+                                    {
+                                        "help": "",
+                                        "name": "proceed_criteria",
+                                        "spec": {
+                                            "type": "text",
+                                            "default": null,
+                                            "required": false,
+                                            "multiline": false
+                                        },
+                                        "type": "array",
+                                        "label": "Proceed criteria",
+                                        "required": false
+                                    }
+                                ],
+                                "type": "collection",
+                                "label": "Decision point",
+                                "required": false
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Validation plan 30 days",
+                        "required": false
+                    },
+                    {
+                        "help": "",
+                        "name": "six_month_outlook",
+                        "spec": [
+                            {
+                                "help": "",
+                                "name": "only_if_validation_passes",
+                                "spec": {
+                                    "type": "text",
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                },
+                                "type": "array",
+                                "label": "Only if validation passes",
+                                "required": false
+                            },
+                            {
+                                "help": "",
+                                "name": "metrics_to_track",
+                                "spec": {
+                                    "type": "text",
+                                    "default": null,
+                                    "required": false,
+                                    "multiline": false
+                                },
+                                "type": "array",
+                                "label": "Metrics to track",
+                                "required": false
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Six month outlook",
+                        "required": false
+                    },
+                    {
+                        "help": "",
+                        "name": "email_preview",
+                        "spec": [
+                            {
+                                "help": "",
+                                "name": "purpose",
+                                "type": "text",
+                                "label": "Purpose",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "summary",
+                                "type": "text",
+                                "label": "Summary",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "key_insight",
+                                "type": "text",
+                                "label": "Key insight",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "primary_risk",
+                                "type": "text",
+                                "label": "Primary risk",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            },
+                            {
+                                "help": "",
+                                "name": "next_step",
+                                "type": "text",
+                                "label": "Next step",
+                                "default": null,
+                                "required": false,
+                                "multiline": false
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Email preview",
+                        "required": false
+                    }
+                ]
+            }
+        },
+        {
+            "id": 16,
+            "module": "builtin:BasicRouter",
+            "version": 1,
+            "mapper": null,
+            "metadata": {
+                "designer": {
+                    "x": -1797,
+                    "y": -209,
+                    "name": "Evaluation Output Distributor"
+                }
+            },
+            "routes": [
+                {
+                    "flow": [
+                        {
+                            "id": 18,
+                            "module": "google-sheets:addRow",
+                            "version": 2,
+                            "parameters": {
+                                "__IMTCONN__": 4665532
+                            },
+                            "mapper": {
+                                "from": "drive",
+                                "mode": "select",
+                                "values": {
+                                    "email": "{{17.email}}",
+                                    "name ": "{{17.name}}",
+                                    "time ": "{{23.response}}",
+                                    "stage ": "{{17.stage}}",
+                                    "country ": "{{17.country}}",
+                                    "industry ": "{{17.industry}}",
+                                    "team size ": "{{17.team_size}}",
+                                    "timestamp ": "{{timestamp}}",
+                                    "phone number ": "{{17.phone}}",
+                                    "pricing model": "{{17.pricing_model}}",
+                                    "differntiation": "{{17.differentiation}}",
+                                    "product/service": "{{17.product_service}}",
+                                    "current revenue ": "{{17.current_revenue}}",
+                                    "target customers": "{{17.target_customers}}",
+                                    "problem statement": "{{17.problem_statement}}",
+                                    "willingness to pay ": "{{17.willingness_to_pay}}"
+                                },
+                                "sheetId": "Sheet1",
+                                "spreadsheetId": "/1I_6QT8pJgzGfr-TraHcJL8sFJ89rc0JqmntHgijOul8",
+                                "includesHeaders": true,
+                                "insertDataOption": "INSERT_ROWS",
+                                "useColumnHeaders": true,
+                                "valueInputOption": "USER_ENTERED",
+                                "insertUnformatted": false
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": -1471,
+                                    "y": -110,
+                                    "name": "Save Founder Evaluation Entry"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "from": {
+                                            "label": "My Drive"
+                                        },
+                                        "mode": {
+                                            "label": "Search by path"
+                                        },
+                                        "sheetId": {
+                                            "label": "Sheet1"
+                                        },
+                                        "spreadsheetId": {
+                                            "path": [
+                                                "AI Contact Info (Responses)"
+                                            ]
+                                        },
+                                        "includesHeaders": {
+                                            "label": "Yes"
+                                        },
+                                        "insertDataOption": {
+                                            "mode": "chose",
+                                            "label": "Insert rows"
+                                        },
+                                        "useColumnHeaders": {
+                                            "label": "Yes",
+                                            "nested": [
+                                                {
+                                                    "name": "values",
+                                                    "spec": [
+                                                        {
+                                                            "name": "timestamp ",
+                                                            "type": "text",
+                                                            "label": "timestamp  (A)"
+                                                        },
+                                                        {
+                                                            "name": "time ",
+                                                            "type": "text",
+                                                            "label": "time  (B)"
+                                                        },
+                                                        {
+                                                            "name": "name ",
+                                                            "type": "text",
+                                                            "label": "name  (C)"
+                                                        },
+                                                        {
+                                                            "name": "email",
+                                                            "type": "text",
+                                                            "label": "email (D)"
+                                                        },
+                                                        {
+                                                            "name": "phone number ",
+                                                            "type": "text",
+                                                            "label": "phone number  (E)"
+                                                        },
+                                                        {
+                                                            "name": "industry ",
+                                                            "type": "text",
+                                                            "label": "industry  (F)"
+                                                        },
+                                                        {
+                                                            "name": "product/service",
+                                                            "type": "text",
+                                                            "label": "product/service (G)"
+                                                        },
+                                                        {
+                                                            "name": "target customers",
+                                                            "type": "text",
+                                                            "label": "target customers (H)"
+                                                        },
+                                                        {
+                                                            "name": "pricing model",
+                                                            "type": "text",
+                                                            "label": "pricing model (I)"
+                                                        },
+                                                        {
+                                                            "name": "stage ",
+                                                            "type": "text",
+                                                            "label": "stage  (J)"
+                                                        },
+                                                        {
+                                                            "name": "team size ",
+                                                            "type": "text",
+                                                            "label": "team size  (K)"
+                                                        },
+                                                        {
+                                                            "name": "current revenue ",
+                                                            "type": "text",
+                                                            "label": "current revenue  (L)"
+                                                        },
+                                                        {
+                                                            "name": "country ",
+                                                            "type": "text",
+                                                            "label": "country  (M)"
+                                                        },
+                                                        {
+                                                            "name": "differntiation",
+                                                            "type": "text",
+                                                            "label": "differntiation (N)"
+                                                        },
+                                                        {
+                                                            "name": "problem statement",
+                                                            "type": "text",
+                                                            "label": "problem statement (O)"
+                                                        },
+                                                        {
+                                                            "name": "willingness to pay ",
+                                                            "type": "text",
+                                                            "label": "willingness to pay  (P)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(Q)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(R)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(S)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(T)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(U)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(V)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(W)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(X)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(Y)"
+                                                        },
+                                                        {
+                                                            "name": "undefined",
+                                                            "type": "text",
+                                                            "label": "(Z)"
+                                                        }
+                                                    ],
+                                                    "type": "collection",
+                                                    "label": "Values in columns",
+                                                    "metadata": [
+                                                        [
+                                                            [
+                                                                "timestamp ",
+                                                                "time ",
+                                                                "name ",
+                                                                "email",
+                                                                "phone number ",
+                                                                "industry ",
+                                                                "product/service",
+                                                                "target customers",
+                                                                "pricing model",
+                                                                "stage ",
+                                                                "team size ",
+                                                                "current revenue ",
+                                                                "country ",
+                                                                "differntiation",
+                                                                "problem statement",
+                                                                "willingness to pay "
+                                                            ]
+                                                        ]
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "valueInputOption": {
+                                            "mode": "chose",
+                                            "label": "User entered"
+                                        },
+                                        "insertUnformatted": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google"
+                                            },
+                                            "label": "My Google connection (nikhilvishwakarma322@gmail.com)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "mode",
+                                        "type": "select",
+                                        "label": "Search Method",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "select",
+                                                "fromAll",
+                                                "map"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "insertUnformatted",
+                                        "type": "boolean",
+                                        "label": "Unformatted",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "valueInputOption",
+                                        "type": "select",
+                                        "label": "Value input option",
+                                        "validate": {
+                                            "enum": [
+                                                "USER_ENTERED",
+                                                "RAW"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "insertDataOption",
+                                        "type": "select",
+                                        "label": "Insert data option",
+                                        "validate": {
+                                            "enum": [
+                                                "INSERT_ROWS",
+                                                "OVERWRITE"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "from",
+                                        "type": "select",
+                                        "label": "Drive",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "drive",
+                                                "share",
+                                                "team"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "spreadsheetId",
+                                        "type": "file",
+                                        "label": "Spreadsheet Name",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "sheetId",
+                                        "type": "select",
+                                        "label": "Sheet Name",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "includesHeaders",
+                                        "type": "select",
+                                        "label": "Table contains headers",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                true,
+                                                false
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "useColumnHeaders",
+                                        "type": "select",
+                                        "label": "Use column headers as IDs of the columns",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                true,
+                                                false
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "values",
+                                        "spec": [
+                                            {
+                                                "name": "timestamp ",
+                                                "type": "text",
+                                                "label": "timestamp  (A)"
+                                            },
+                                            {
+                                                "name": "time ",
+                                                "type": "text",
+                                                "label": "time  (B)"
+                                            },
+                                            {
+                                                "name": "name ",
+                                                "type": "text",
+                                                "label": "name  (C)"
+                                            },
+                                            {
+                                                "name": "email",
+                                                "type": "text",
+                                                "label": "email (D)"
+                                            },
+                                            {
+                                                "name": "phone number ",
+                                                "type": "text",
+                                                "label": "phone number  (E)"
+                                            },
+                                            {
+                                                "name": "industry ",
+                                                "type": "text",
+                                                "label": "industry  (F)"
+                                            },
+                                            {
+                                                "name": "product/service",
+                                                "type": "text",
+                                                "label": "product/service (G)"
+                                            },
+                                            {
+                                                "name": "target customers",
+                                                "type": "text",
+                                                "label": "target customers (H)"
+                                            },
+                                            {
+                                                "name": "pricing model",
+                                                "type": "text",
+                                                "label": "pricing model (I)"
+                                            },
+                                            {
+                                                "name": "stage ",
+                                                "type": "text",
+                                                "label": "stage  (J)"
+                                            },
+                                            {
+                                                "name": "team size ",
+                                                "type": "text",
+                                                "label": "team size  (K)"
+                                            },
+                                            {
+                                                "name": "current revenue ",
+                                                "type": "text",
+                                                "label": "current revenue  (L)"
+                                            },
+                                            {
+                                                "name": "country ",
+                                                "type": "text",
+                                                "label": "country  (M)"
+                                            },
+                                            {
+                                                "name": "differntiation",
+                                                "type": "text",
+                                                "label": "differntiation (N)"
+                                            },
+                                            {
+                                                "name": "problem statement",
+                                                "type": "text",
+                                                "label": "problem statement (O)"
+                                            },
+                                            {
+                                                "name": "willingness to pay ",
+                                                "type": "text",
+                                                "label": "willingness to pay  (P)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(Q)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(R)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(S)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(T)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(U)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(V)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(W)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(X)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(Y)"
+                                            },
+                                            {
+                                                "name": "undefined",
+                                                "type": "text",
+                                                "label": "(Z)"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Values in columns",
+                                        "metadata": [
+                                            [
+                                                [
+                                                    "timestamp ",
+                                                    "time ",
+                                                    "name ",
+                                                    "email",
+                                                    "phone number ",
+                                                    "industry ",
+                                                    "product/service",
+                                                    "target customers",
+                                                    "pricing model",
+                                                    "stage ",
+                                                    "team size ",
+                                                    "current revenue ",
+                                                    "country ",
+                                                    "differntiation",
+                                                    "problem statement",
+                                                    "willingness to pay "
+                                                ]
+                                            ]
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "flow": [
+                        {
+                            "id": 21,
+                            "module": "pdf-co:HTMLtoPDF",
+                            "version": 1,
+                            "parameters": {
+                                "__IMTCONN__": 4727800
+                            },
+                            "mapper": {
+                                "name": "Startup Evalution Report",
+                                "async": 15000,
+                                "export": {
+                                    "exportType": "downloadFile"
+                                },
+                                "convert": {
+                                    "html": "<!DOCTYPE html>\r\n<html lang=\"en\">\r\n<head>\r\n  <meta charset=\"UTF-8\" />\r\n  <title>Market Reality & Validation Report</title>\r\n  <style>\r\n    /* Modern Reset & Base Styles */\r\n    body {\r\n      font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;\r\n      font-size: 13px;\r\n      line-height: 1.6;\r\n      color: #334155; /* Slate 700 */\r\n      margin: 0;\r\n      padding: 40px;\r\n      background-color: #fff;\r\n    }\r\n\r\n    /* Header Section */\r\n    .report-header {\r\n      border-bottom: 4px solid #1e293b;\r\n      margin-bottom: 30px;\r\n      padding-bottom: 20px;\r\n    }\r\n\r\n    h1 {\r\n      font-size: 28px;\r\n      color: #0f172a; /* Slate 900 */\r\n      margin: 0 0 10px 0;\r\n      text-transform: uppercase;\r\n      letter-spacing: 1px;\r\n    }\r\n\r\n    .customer-intro {\r\n      font-size: 15px;\r\n      color: #475569;\r\n      background: #f8fafc;\r\n      padding: 15px;\r\n      border-radius: 8px;\r\n      border: 1px solid #e2e8f0;\r\n    }\r\n\r\n    /* Typography */\r\n    h2 {\r\n      font-size: 18px;\r\n      color: #1e293b;\r\n      margin-top: 35px;\r\n      padding-bottom: 8px;\r\n      border-bottom: 2px solid #e2e8f0;\r\n      display: flex;\r\n      align-items: center;\r\n    }\r\n\r\n    h3 {\r\n      font-size: 14px;\r\n      color: #4338ca; /* Indigo 700 */\r\n      margin-top: 20px;\r\n      text-transform: uppercase;\r\n      letter-spacing: 0.5px;\r\n    }\r\n\r\n    p { margin: 10px 0; }\r\n\r\n    /* Layout Components */\r\n    .section { margin-bottom: 40px; }\r\n\r\n    ul {\r\n      margin: 10px 0 15px 20px;\r\n      padding: 0;\r\n    }\r\n\r\n    li { margin-bottom: 8px; }\r\n\r\n    /* Tables */\r\n    table {\r\n      width: 100%;\r\n      border-collapse: collapse;\r\n      margin-top: 15px;\r\n      background: #fff;\r\n    }\r\n\r\n    table th {\r\n      background-color: #f1f5f9;\r\n      color: #0f172a;\r\n      text-align: left;\r\n      font-weight: 600;\r\n      border: 1px solid #cbd5e1;\r\n      padding: 12px;\r\n    }\r\n\r\n    table td {\r\n      border: 1px solid #cbd5e1;\r\n      padding: 12px;\r\n      vertical-align: top;\r\n    }\r\n\r\n    /* Highlights & Boxes */\r\n    .highlight-box {\r\n      background: #eef2ff;\r\n      padding: 15px;\r\n      border-left: 5px solid #4338ca;\r\n      border-radius: 4px;\r\n      margin: 15px 0;\r\n    }\r\n\r\n    .truth-box {\r\n      background: #fff1f2;\r\n      padding: 20px;\r\n      border: 1px solid #fecdd3;\r\n      border-radius: 8px;\r\n      color: #9f1239;\r\n      font-weight: 500;\r\n    }\r\n\r\n    .muted {\r\n      color: #64748b;\r\n      font-style: italic;\r\n      font-size: 12px;\r\n    }\r\n\r\n    .badge {\r\n      display: inline-block;\r\n      padding: 2px 8px;\r\n      background: #1e293b;\r\n      color: white;\r\n      border-radius: 4px;\r\n      margin-right: 10px;\r\n    }\r\n  </style>\r\n</head>\r\n\r\n<body>\r\n\r\n  <div class=\"report-header\">\r\n    <h1>Market Reality & Validation</h1>\r\n    <div class=\"customer-intro\">\r\n      <strong>What is this report?</strong> <br>This document provides a no-nonsense look at your business idea. Inside, you will find a breakdown of what your customers <em>actually</em> want, the honest financial potential of your market, and a 30-day roadmap to test your idea before spending significant capital.\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"section\">\r\n    <h2>The Honest Truth</h2>\r\n    <div class=\"truth-box\">\r\n      {{22.uncomfortable_truth}}\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"section\">\r\n    <h2>1. Customer Desires vs. Reality</h2>\r\n    \r\n    <h3>The Surface Level (What they say)</h3>\r\n    <p>{{22.jobs_to_be_done_reality.what_they_say}}</p>\r\n\r\n    <h3>The Deep Need (What they actually want)</h3>\r\n    <ul>\r\n      <li>{{join(22.jobs_to_be_done_reality.what_they_actually_want; \"</li><li>\")}}</li>\r\n    </ul>\r\n\r\n    <div class=\"highlight-box\">\r\n      <strong>The Bottom Line:</strong> {{22.jobs_to_be_done_reality.implication}}\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"section\">\r\n    <h2>2. Market & Money Reality</h2>\r\n    <p>{{22.market_reality.market_size_commentary}}</p>\r\n    <p><strong>Year 1 Potential:</strong> {{22.market_reality.year_1_customer_potential}} customers.</p>\r\n\r\n    <h3>Competitors & Free Options</h3>\r\n    <ul>\r\n      <li>{{join(22.market_reality.free_alternatives; \"</li><li>\")}}</li>\r\n    </ul>\r\n\r\n    <p class=\"muted\">{{22.market_reality.conversion_expectation}}</p>\r\n    <p><strong>Realistic Year-1 Revenue:</strong> <span style=\"font-size: 16px; color: #15803d;\">{{22.market_reality.revenue_year_1_realistic}}</span></p>\r\n\r\n    <h3>Closing the \"Value Gap\"</h3>\r\n    <p><strong>Is there a gap?</strong> {{22.value_gap_analysis.exists}}</p>\r\n    <p><strong>The Problem:</strong> {{22.value_gap_analysis.description}}</p>\r\n    <p><strong>The Fix:</strong> {{22.value_gap_analysis.mitigation}}</p>\r\n  </div>\r\n\r\n  <div class=\"section\">\r\n    <h2>3. Critical Risk Assessment</h2>\r\n    <table>\r\n      <thead>\r\n        <tr>\r\n          <th>Risk Factor</th>\r\n          <th>Severity</th>\r\n          <th>Why It Matters</th>\r\n          <th>How to Fix It</th>\r\n        </tr>\r\n      </thead>\r\n      <tbody>\r\n        <tr>\r\n          <td>{{22.risk_assessment[0].risk}}</td>\r\n          <td>{{22.risk_assessment[0].severity}}</td>\r\n          <td>{{22.risk_assessment[0].why_it_matters}}</td>\r\n          <td>{{22.risk_assessment[0].mitigation}}</td>\r\n        </tr>\r\n        <tr>\r\n          <td>{{22.risk_assessment[1].risk}}</td>\r\n          <td>{{22.risk_assessment[1].severity}}</td>\r\n          <td>{{22.risk_assessment[1].why_it_matters}}</td>\r\n          <td>{{22.risk_assessment[1].mitigation}}</td>\r\n        </tr>\r\n        <tr>\r\n          <td>{{22.risk_assessment[2].risk}}</td>\r\n          <td>{{22.risk_assessment[2].severity}}</td>\r\n          <td>{{22.risk_assessment[2].why_it_matters}}</td>\r\n          <td>{{22.risk_assessment[2].mitigation}}</td>\r\n        </tr>\r\n        </tbody>\r\n    </table>\r\n  </div>\r\n\r\n  <div class=\"section\">\r\n    <h2>4. Pricing Strategy</h2>\r\n    <p><strong>Competitor Prices:</strong> {{22.pricing_intelligence.benchmarks}}</p>\r\n    <p><strong>Our Recommendation:</strong> <strong>{{22.pricing_intelligence.recommended_price}}</strong></p>\r\n    <p><strong>Estimated Sales Rate:</strong> {{22.pricing_intelligence.expected_conversion_band}}</p>\r\n\r\n    <div class=\"highlight-box\" style=\"border-left-color: #b91c1c; background: #fef2f2;\">\r\n      <strong style=\"color: #b91c1c;\">⚠️ The Freemium Trap</strong><br />\r\n      {{22.pricing_intelligence.freemium_trap_warning}}\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"section\">\r\n    <h2>5. 30-Day Launch Plan</h2>\r\n\r\n    <h3>Week 1: Foundations</h3>\r\n    <ul>\r\n      <li>{{join(22.validation_plan_30_days.week_1; \"</li><li>\")}}</li>\r\n    </ul>\r\n\r\n    <h3>Weeks 2–3: Testing</h3>\r\n    <ul>\r\n      <li>{{join(22.validation_plan_30_days.week_2_3; \"</li><li>\")}}</li>\r\n    </ul>\r\n\r\n    <h3>Week 4: The Decision</h3>\r\n    <div class=\"highlight-box\">\r\n      <h4 style=\"margin-top: 0; color: #b91c1c;\">Stop (Kill Criteria)</h4>\r\n      <ul>\r\n        <li>{{join(22.validation_plan_30_days.decision_point.kill_criteria; \"</li><li>\")}}</li>\r\n      </ul>\r\n\r\n      <h4 style=\"color: #15803d;\">Go (Proceed Criteria)</h4>\r\n      <ul>\r\n        <li>{{join(22.validation_plan_30_days.decision_point.proceed_criteria; \"</li><li>\")}}</li>\r\n      </ul>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"section\">\r\n    <h2>6. The Path Forward</h2>\r\n\r\n    <h3>Success Scenario (6 Months)</h3>\r\n    <ul>\r\n      <li>{{join(22.six_month_outlook.only_if_validation_passes; \"</li><li>\")}}</li>\r\n    </ul>\r\n\r\n    <h3>Numbers to Watch</h3>\r\n    <ul>\r\n      <li>{{join(22.six_month_outlook.metrics_to_track; \"</li><li>\")}}</li>\r\n    </ul>\r\n  </div>\r\n\r\n<div style=\"margin-top: 50px; padding-top: 20px; border-top: 1px solid #e2e8f0;\">\r\n  <p class=\"muted\" style=\"text-align: center; font-size: 11px; line-height: 1.4;\">\r\n    <strong>CONFIDENTIAL:</strong> This report contains proprietary market strategy and intellectual property intended solely for the recipient. \r\n    Unauthorized distribution, copying, or disclosure of these contents is strictly prohibited. \r\n    The analysis provided is based on current market conditions and does not guarantee specific financial outcomes.\r\n  </p>\r\n</div>\n</body>\r\n</html>",
+                                    "convertType": "fromHtml"
+                                },
+                                "paperSize": "a4",
+                                "expiration": "60",
+                                "orientation": "portrait",
+                                "printBackground": true,
+                                "doNotWaitFullLoad": false
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": -1517,
+                                    "y": -485,
+                                    "name": "Generate Detailed Evaluation Report (PDF)"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "async": {
+                                            "mode": "chose",
+                                            "label": "Async"
+                                        },
+                                        "export": {
+                                            "nested": {
+                                                "exportType": {
+                                                    "label": "Download a File"
+                                                }
+                                            }
+                                        },
+                                        "convert": {
+                                            "nested": {
+                                                "convertType": {
+                                                    "label": "HTML to PDF"
+                                                }
+                                            }
+                                        },
+                                        "paperSize": {
+                                            "label": "A4"
+                                        },
+                                        "orientation": {
+                                            "label": "Portrait"
+                                        },
+                                        "printBackground": {
+                                            "mode": "chose"
+                                        },
+                                        "doNotWaitFullLoad": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "pdf-co"
+                                            },
+                                            "label": "My PDF.co connection"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:pdf-co",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "convert",
+                                        "spec": [
+                                            {
+                                                "name": "convertType",
+                                                "type": "select",
+                                                "label": "Convert Type",
+                                                "required": true,
+                                                "validate": {
+                                                    "enum": [
+                                                        "fromHtml",
+                                                        "fromHtmlTemplate",
+                                                        "fromWebsite"
+                                                    ]
+                                                }
+                                            },
+                                            {
+                                                "name": "html",
+                                                "type": "text",
+                                                "label": "Input HTML Code",
+                                                "required": true
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Convert Options",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "name",
+                                        "type": "text",
+                                        "label": "Output File Name"
+                                    },
+                                    {
+                                        "name": "orientation",
+                                        "type": "select",
+                                        "label": "Orientation",
+                                        "validate": {
+                                            "enum": [
+                                                "portrait",
+                                                "landscape"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "paperSize",
+                                        "type": "select",
+                                        "label": "Paper Size ",
+                                        "validate": {
+                                            "enum": [
+                                                "a0",
+                                                "a1",
+                                                "a2",
+                                                "a3",
+                                                "a4",
+                                                "a5",
+                                                "a6",
+                                                "legal",
+                                                "letter",
+                                                "tabloid",
+                                                "custom"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "printBackground",
+                                        "type": "boolean",
+                                        "label": "Render Page Background"
+                                    },
+                                    {
+                                        "name": "doNotWaitFullLoad",
+                                        "type": "boolean",
+                                        "label": "Do not wait for full load"
+                                    },
+                                    {
+                                        "name": "margins",
+                                        "type": "text",
+                                        "label": "Margins"
+                                    },
+                                    {
+                                        "name": "async",
+                                        "type": "select",
+                                        "label": "Execution Mode",
+                                        "validate": {
+                                            "enum": [
+                                                false,
+                                                15000,
+                                                "asyncCheckLater"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "profiles",
+                                        "type": "text",
+                                        "label": "Profiles"
+                                    },
+                                    {
+                                        "name": "expiration",
+                                        "type": "number",
+                                        "label": "Output Links Expiration"
+                                    },
+                                    {
+                                        "name": "export",
+                                        "spec": [
+                                            {
+                                                "name": "exportType",
+                                                "type": "select",
+                                                "label": "Export Type",
+                                                "required": true,
+                                                "validate": {
+                                                    "enum": [
+                                                        "downloadFile",
+                                                        "inline"
+                                                    ]
+                                                }
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Export Options",
+                                        "required": true
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "id": 13,
+                            "module": "google-email:sendAnEmail",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 5416106
+                            },
+                            "mapper": {
+                                "to": [
+                                    "{{17.email}}"
+                                ],
+                                "content": "\r\n<!DOCTYPE html>\r\n<html>\r\n<head>\r\n  <meta charset=\"UTF-8\">\r\n  <title>Startup Idea Evaluation</title>\r\n</head>\r\n<body style=\"margin:0; padding:0; background-color:#f6f8fb; font-family:Arial, Helvetica, sans-serif;\">\r\n\r\n  <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#f6f8fb; padding:24px;\">\r\n    <tr>\r\n      <td align=\"center\">\r\n\r\n        <!-- Main Container -->\r\n        <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"background-color:#ffffff; border-radius:10px; padding:32px; box-shadow:0 4px 12px rgba(0,0,0,0.06);\">\r\n\r\n          <!-- Greeting -->\r\n          <tr>\r\n            <td style=\"font-size:16px; color:#333333;\">\r\n              <p style=\"margin-top:0;\">Hi <strong>{{17.name}}</strong>,</p>\r\n\r\n              <p>\r\n                Thank you for submitting your startup idea.  \r\n                Below is a <strong>concise evaluation summary</strong> based on your submission.\r\n              </p>\r\n            </td>\r\n          </tr>\r\n\r\n          <!-- Divider -->\r\n          <tr>\r\n            <td style=\"padding:16px 0;\">\r\n              <hr style=\"border:none; border-top:1px solid #e6e9ef;\">\r\n            </td>\r\n          </tr>\r\n\r\n          <!-- Scores -->\r\n          <tr>\r\n            <td>\r\n              <h3 style=\"margin-bottom:12px; color:#222222;\">🔍 Evaluation Scores</h3>\r\n              <table width=\"100%\" cellpadding=\"6\" cellspacing=\"0\" style=\"font-size:15px; color:#333333;\">\r\n                <tr>\r\n                  <td>Market Potential</td>\r\n                  <td align=\"right\"><strong>{{22.scores.market_score}}</strong></td>\r\n                </tr>\r\n                <tr>\r\n                  <td>Execution Feasibility</td>\r\n                  <td align=\"right\"><strong>{{22.scores.execution_score}}</strong></td>\r\n                </tr>\r\n                <tr>\r\n                  <td>Monetization Strength</td>\r\n                  <td align=\"right\"><strong>{{22.scores.monetization_score}}</strong></td>\r\n                </tr>\r\n                <tr>\r\n                  <td>Risk Level</td>\r\n                  <td align=\"right\"><strong>{{22.scores.risk_score}}</strong></td>\r\n                </tr>\r\n                <tr>\r\n                  <td style=\"padding-top:8px;\">Overall Score</td>\r\n                  <td align=\"right\" style=\"padding-top:8px;\"><strong>{{22.scores.overall_score}}</strong></td>\r\n                </tr>\r\n              </table>\r\n            </td>\r\n          </tr>\r\n\r\n          <!-- Divider -->\r\n          <tr>\r\n            <td style=\"padding:16px 0;\">\r\n              <hr style=\"border:none; border-top:1px solid #e6e9ef;\">\r\n            </td>\r\n          </tr>\r\n\r\n          <!-- Success Probability -->\r\n          <tr>\r\n            <td>\r\n              <h3 style=\"margin-bottom:8px; color:#222222;\">📊 Success Probability</h3>\r\n              <p style=\"font-size:15px; color:#333333;\">\r\n                Estimated likelihood of success:  \r\n                <strong>{{22.success_probability}}</strong>\r\n              </p>\r\n            </td>\r\n          </tr>\r\n\r\n          <!-- Insight -->\r\n          <tr>\r\n            <td style=\"padding-top:12px;\">\r\n              <h3 style=\"margin-bottom:6px; color:#222222;\">🧠 Key Insight</h3>\r\n              <p style=\"font-size:15px; color:#333333; line-height:1.6;\">\r\n                {{22.email_preview.key_insight}}\r\n              </p>\r\n            </td>\r\n          </tr>\r\n\r\n          <!-- Reality Check -->\r\n          <tr>\r\n            <td style=\"padding-top:12px;\">\r\n              <h3 style=\"margin-bottom:6px; color:#222222;\">⚠️ Important Reality Check</h3>\r\n              <p style=\"font-size:15px; color:#333333; line-height:1.6;\">\r\n                {{22.uncomfortable_truth}}\r\n              </p>\r\n            </td>\r\n          </tr>\r\n\r\n          <!-- Next Step -->\r\n          <tr>\r\n            <td style=\"padding-top:12px;\">\r\n              <h3 style=\"margin-bottom:6px; color:#222222;\">🚀 Recommended Next Step</h3>\r\n              <p style=\"font-size:15px; color:#333333; line-height:1.6;\">\r\n                {{22.email_preview.next_step}}\r\n              </p>\r\n            </td>\r\n          </tr>\r\n\r\n          <!-- PDF Notice -->\r\n          <tr>\r\n            <td style=\"padding-top:20px;\">\r\n              <p style=\"font-size:15px; color:#333333;\">\r\n                📄 <strong>Detailed Evaluation Report</strong><br>\r\n                A detailed PDF report with deeper analysis and recommendations is attached to this email.\r\n              </p>\r\n            </td>\r\n          </tr>\r\n\r\n          <!-- Closing -->\r\n          <tr>\r\n            <td style=\"padding-top:24px; font-size:15px; color:#333333;\">\r\n              <p>\r\n                If you’d like further guidance or a deeper review, feel free to reply to this email.\r\n              </p>\r\n\r\n              <p style=\"margin-bottom:0;\">\r\n                Best regards,<br>\r\n                <strong>StartupSignal</strong>\r\n              </p>\r\n            </td>\r\n          </tr>\r\n\r\n        </table>\r\n        <!-- End Main Container -->\r\n\r\n      </td>\r\n    </tr>\r\n  </table>\r\n\r\n</body>\r\n</html>\r\n",
+                                "subject": "Your Startup Idea – Initial Evaluation Summary",
+                                "bodyType": "rawHtml",
+                                "attachments": [
+                                    {
+                                        "data": "{{21.data}}",
+                                        "filename": "{{21.name}}"
+                                    }
+                                ]
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": -1239,
+                                    "y": -305,
+                                    "name": "Email Evaluation Summary"
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose",
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (nikhilvishwakarma322@gmail.com)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "to",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "email",
+                                            "label": "Recipient email address",
+                                            "required": true,
+                                            "validate": true
+                                        },
+                                        "type": "array",
+                                        "label": "To",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "subject",
+                                        "type": "text",
+                                        "label": "Subject"
+                                    },
+                                    {
+                                        "name": "bodyType",
+                                        "type": "select",
+                                        "label": "Body type",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "rawHtml",
+                                                "collection"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "attachments",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "filename",
+                                                    "type": "filename",
+                                                    "label": "File name",
+                                                    "required": true,
+                                                    "semantic": "file:name"
+                                                },
+                                                {
+                                                    "name": "data",
+                                                    "type": "buffer",
+                                                    "label": "Data",
+                                                    "required": true,
+                                                    "semantic": "file:data"
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Attachment"
+                                        },
+                                        "type": "array",
+                                        "label": "Attachments"
+                                    },
+                                    {
+                                        "name": "from",
+                                        "type": "select",
+                                        "label": "From"
+                                    },
+                                    {
+                                        "name": "cc",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "email",
+                                            "label": "Recipient email address",
+                                            "required": true
+                                        },
+                                        "type": "array",
+                                        "label": "CC recipients"
+                                    },
+                                    {
+                                        "name": "bcc",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "email",
+                                            "label": "Recipient email address",
+                                            "required": true
+                                        },
+                                        "type": "array",
+                                        "label": "BCC recipients"
+                                    },
+                                    {
+                                        "name": "emailHeaders",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "key",
+                                                    "type": "text",
+                                                    "label": "Key",
+                                                    "required": true
+                                                },
+                                                {
+                                                    "name": "value",
+                                                    "type": "text",
+                                                    "label": "Value"
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Email header"
+                                        },
+                                        "type": "array",
+                                        "label": "Additional email headers"
+                                    },
+                                    {
+                                        "name": "content",
+                                        "type": "text",
+                                        "label": "Content"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "instant": true,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.make.com",
+        "notes": []
+    }
+}
