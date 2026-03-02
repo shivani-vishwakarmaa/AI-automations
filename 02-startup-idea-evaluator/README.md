@@ -1,5 +1,7 @@
 # 🚀 AI Startup Idea Evaluation System
 A production-ready automation that provides instant, high-quality audits for founder submissions.
+*  🎥 Live Demo & Workflow Screenshots  👉 [View Here](https://drive.google.com/drive/folders/1FUGPCZOpE5gljXAMsaKWnulqd9kDmPUw?usp=drive_link)
+
 
 ### 🎯 The Problem
 Incubators and accelerators often deal with hundreds of applications. Manual reviews are slow, feedback quality is inconsistent, and documenting every evaluation is a massive administrative burden.
