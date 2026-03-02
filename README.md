@@ -10,19 +10,20 @@ This repository serves as a technical portfolio for my automation architecture. 
 ### 1. [📊 Automated Sales Analysis & Reporting](./01-sales-data-reporting/)
 * **Stack:** n8n, Google Sheets, GPT-4, Slack.
 * **Core Value:** Transforms raw, messy sales data into AI-summarized reports with a human-in-the-loop approval system.
-* 🎥 Live Demo & Workflow Screenshots
-
-📂 Full Demo Folder (Loom Video + Workflow Screenshot):  
-👉 [View Here](https://drive.google.com/drive/folders/1aFH0duu2Av_dSMaoi4eBLNlLklDGbKpp?usp=drive_link)
+* 🎥 Live Demo & Workflow Screenshots  👉 [View Here](https://drive.google.com/drive/folders/1Vrz2TGEq4hnfAKo1NVJGnMjs_7hMKi1b?usp=drive_link)
 
 
 ### 2. [🚀 Startup Idea Evaluation System](./02-startup-idea-evaluator/)
 * **Stack:** Make.com, AI Agents, PDF Generation.
 * **Core Value:** A scalable audit engine that provides founders with instant feedback and structured PDF reports.
+*  🎥 Live Demo & Workflow Screenshots  👉 [View Here](https://drive.google.com/drive/folders/1FUGPCZOpE5gljXAMsaKWnulqd9kDmPUw?usp=drive_link)
+
 
 ### 3. [🎯 Lead Management & Qualification Engine](./03-lead-management-system/)
 * **Stack:** n8n, OpenRouter (LLM), CRM, Email.
 * **Core Value:** Ensures 24/7 lead acknowledgement and uses an AI "Decision Engine" to categorize leads by temperature (Hot/Warm/Cold).
+* 🎥 Live Demo & Workflow Screenshots  👉 [View Here](https://drive.google.com/drive/folders/1aFH0duu2Av_dSMaoi4eBLNlLklDGbKpp?usp=drive_link)
+
 
 ---
 
