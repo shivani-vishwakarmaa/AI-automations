@@ -20,3 +20,6 @@
 2. Configure credentials (Email, LLM)
 3. Execute the workflow
 
+## 🎥 Live Demo & Workflow Screenshot  👉 [View Here](https://drive.google.com/drive/folders/1Vrz2TGEq4hnfAKo1NVJGnMjs_7hMKi1b?usp=drive_link)
+
+
