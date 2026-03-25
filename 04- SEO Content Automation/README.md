@@ -80,6 +80,52 @@ This system is useful for:
 • Brand voice training
 • Multi‑language support
 
+## IMPROVEMENTS
+
+1. Writer Quality
+- Use conversational, human tone
+- Short paragraphs (2–3 lines)
+- Add H2, H3 headings
+- Include real-world examples
+- Avoid AI-like phrasing
+- Use keywords naturally (no stuffing)
+
+2. Strong Introduction
+- Start with a hook (problem / stat / bold claim)
+
+3. Content Depth
+- Add at least 2 real-world examples or mini case studies
+- Make content actionable, not just theoretical
+
+4. Humanizer Upgrade
+- Remove robotic tone
+- Simplify sentences
+- Add natural flow and slight personality
+
+5. Conclusion Section
+- Summarize key points
+- Add actionable takeaway
+- Include soft CTA
+
+6. Formatting
+- Clean structure (headings, spacing, bullet points)
+- Improve readability
+
+7. Reliability
+- Add output checks
+- Retry if response is empty
+- Prevent workflow failure
+
+8. Storage Improvement
+- Store title, keywords, and content
+- Prepare for future SEO metadata
+
+9. Future Upgrade (SEO Optimizer)
+- Add meta title (CTR-focused)
+- Add meta description
+- Add internal links
+- Add FAQs
+
 ---
 
 ## In Simple Words
