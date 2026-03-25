@@ -1,0 +1,778 @@
+{
+  "name": "SEO Content Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9f606fe0-7176-4a6e-89b1-2ab33a93e304",
+              "name": "brand",
+              "value": "aisonx.com",
+              "type": "string"
+            },
+            {
+              "id": "dcc20f8b-9671-49dc-8730-850a18a6f6ae",
+              "name": "niche",
+              "value": "AI Solutions, Automation, and B2B SaaS Growth.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "c98cf092-55d8-43c0-a042-0fd28d139efe",
+      "name": "Brand Config",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        176,
+        128
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "functionCode": "// This takes the text string from the LLM and turns it into a JSON object\nconst llmResponse = items[0].json.output;\nconst data = items[0].json.output;\n\nreturn [\n  {\n    json: {\n      primary: data.primary,\n      secondary: data.secondary\n    }\n  }\n];\n"
+      },
+      "id": "1b5102d2-c78d-4257-b038-85fdb7fee466",
+      "name": "Parse Keywords",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        944,
+        128
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "functionCode": "// Access the output object directly from the previous node\nconst data = $json.output;\n\nreturn {\n  title: data.title,\n  description: data.meta_description,\n  outline_count: data.outline.length,\n  // If you specifically need 'primary' and 'secondary' \n  // ensure those keys exist inside your LLM's JSON output\n  primary: data.title, \n  secondary: data.meta_description\n};"
+      },
+      "id": "9c981cfb-606a-49e6-ae42-daa47232a16e",
+      "name": "Parse Plan",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        1568,
+        80
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"primary\": {\n      \"type\": \"string\"\n    },\n    \"secondary\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\"primary\", \"secondary\"]\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        640,
+        112
+      ],
+      "id": "fec4d7a8-a027-497f-b346-04661df90bc1",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"title\": {\n      \"type\": \"string\",\n      \"description\": \"A compelling, high-CTR headline including the primary keyword\"\n    },\n    \"meta_description\": {\n      \"type\": \"string\",\n      \"description\": \"A 150-160 character meta description for Google search\"\n    },\n    \"outline\": {\n      \"type\": \"array\",\n      \"description\": \"Article outline sections\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\"title\", \"meta_description\", \"outline\"]\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1424,
+        192
+      ],
+      "id": "4a1ed34d-0a42-48a0-b35d-c8a8f6575d3c",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[Role]: Expert SEO Strategist for {{ $node[\"Brand Config\"].json[\"brand\"] }}\n[Niche]: {{ $node[\"Brand Config\"].json[\"niche\"] }}\n\n[Task]: Generate high-intent keywords for a B2B SaaS blog.\n[Output Format]: Return ONLY a raw JSON object. No preamble, no markdown code blocks, no explanations.\n\n{\n  \"primary\": \"one main high-volume keyword\",\n  \"secondary\": [\"keyword 2\", \"keyword 3\", \"keyword 4\", \"keyword 5\", \"keyword 6\"]\n}",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        496,
+        16
+      ],
+      "id": "1ccec13b-2a23-41c2-893b-c0adb26f94fb",
+      "name": "AI: Keyword Researcher"
+    },
+    {
+      "parameters": {
+        "content": "## Focuses on the research outcome.\n",
+        "width": 368
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        448,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "330e7be0-e5f4-4755-a46f-d51c932800f5",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "model": "meta-llama/llama-4-scout-17b-16e-instruct",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        496,
+        112
+      ],
+      "id": "fbb34335-af85-479a-a2c3-c954b2b4670b",
+      "name": "Model: Keywords",
+      "credentials": {
+        "groqApi": {
+          "id": "JBRYM5gu3IDQnp1X",
+          "name": "Groq account 2"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Act as a Content Strategist for {{ $node[\"Brand Config\"].json[\"brand\"] }}. \nNiche: {{ $node[\"Brand Config\"].json[\"niche\"] }}.\n\nTarget Keywords:\n- Primary: {{ $json.primary }}\n- Secondary: {{ $json.secondary.join(\", \") }}\n\nTask: Create a detailed SEO blog outline that follows Google's EEAT guidelines.\nOutput: Return ONLY a JSON object. No intro/outro text.\n\n{\n  \"title\": \"A compelling, high-CTR headline including the primary keyword\",\n  \"meta_description\": \"A 150-160 character meta description for Google search\",\n  \"outline\": [\n    \"Introduction: Hook, problem statement, and solution overview\",\n    \"H2: Why [Primary Keyword] matters for B2B Growth\",\n    \"H2: Key benefits of AI Automation in [Niche]\",\n    \"H3: Sub-point using secondary keywords\",\n    \"H2: Implementation strategy and real-world examples\",\n    \"Conclusion: Summary and CTA for {{ $node[\"Brand Config\"].json[\"brand\"] }}\"\n  ]\n}",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1280,
+        96
+      ],
+      "id": "359641ff-b6ce-4b81-97bb-391cb57244a7",
+      "name": "AI: Content Planner"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        208
+      ],
+      "id": "f2b15c92-fdc6-4e6a-9fc9-2540b8c6e8fa",
+      "name": "Model: Planner",
+      "credentials": {
+        "groqApi": {
+          "id": "JBRYM5gu3IDQnp1X",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Act as a Senior B2B Content Marketer and AI Automation Expert for {{ $node[\"Brand Config\"].json[\"brand\"] }}. \n\nTopic: {{ $json.title }}\nMeta Description: {{ $json.description }}\nOutline: \nPrimary: {{ $json.primary }}\nSecondary:{{ $json.secondary }}\n\n\nWriting Guidelines:\n1. Tone: Professional, authoritative, yet accessible. Avoid corporate jargon where simple words work better.\n2. Structure: Use H1, H2, and H3 headers. Use bullet points for readability.\n3. EEAT: Include specific insights on how AI Automation and B2B SaaS growth intersect. \n4. Formatting: Write in clean Markdown.\n5. Goal: Solve a specific pain point for the reader (e.g., efficiency, scaling, or cost reduction).\n\n[Start Writing the Blog Post Below]",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        1728,
+        -96
+      ],
+      "id": "5d91a22a-b561-44bd-8f04-034b91908a2b",
+      "name": "AI: EEAT Writer"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1728,
+        16
+      ],
+      "id": "e89e58b5-8d0c-41fb-a47a-782bb1cd7711",
+      "name": "Model: Writer",
+      "credentials": {
+        "groqApi": {
+          "id": "JBRYM5gu3IDQnp1X",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "functionCode": "// 1. Capture the content from any possible LLM output key\nconst rawContent = $json.text || $json.response || $json.output || \"\";\n\n// 2. Clean the string:\n// - .trim() removes leading/trailing spaces and newlines\n// - .replace() collapses 3+ consecutive newlines into a clean double-space\nconst cleanBlog = rawContent\n  .trim()\n  .replace(/\\n{3,}/g, '\\n\\n');\n\n// 3. Return the sanitized result\nreturn {\n  blog: cleanBlog,\n  wordCount: cleanBlog.split(/\\s+/).filter(word => word.length > 0).length\n};"
+      },
+      "id": "335559cb-907b-4c18-b46c-bff93857686a",
+      "name": "Extract: Draft Content\t",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        2128,
+        -64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "jsCode": "const fullBlog = $json.blog || \"\";\nconst lines = fullBlog.split('\\n');\n\n// The first line starting with '#' is usually your title\nconst title = lines[0].replace(/^#\\s+/, '').trim(); \nconst body = lines.slice(1).join('\\n').trim();\n\nreturn {\n  title: title,\n  body: body,\n  wordCount: $json.wordCount\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2416,
+        144
+      ],
+      "id": "3172999b-1994-45e3-849d-a7ef10f212c6",
+      "name": "Format: Content Data"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[Task]: Rewrite the following B2B blog post to sound 100% human and expert-led.\n[Brand]: {{ $node[\"Brand Config\"].json[\"brand\"] }}\n\n[Editing Rules]:\n1. Remove \"AI-speak\": Delete phrases like \"In the rapidly evolving landscape,\" \"Game-changer,\" or \"Let's dive in.\"\n2. Vary Sentence Structure: Mix short, punchy sentences with longer, descriptive ones (Burstiness).\n3. Use Direct Address: Use \"you\" and \"your\" to speak directly to B2B decision-makers.\n4. Professional Polish: Ensure the formatting is clean Markdown with bolded key terms.\n\n[Original Content]:\ntitle: {{ $json.title }}\n\nbody: {{ $json.body }}\n\nwordcount:{{ $json.wordCount }}",
+        "hasOutputParser": true,
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        2912,
+        176
+      ],
+      "id": "a24ecc5b-64c7-4166-880b-6d2421cbfb0f",
+      "name": "AI: Humanizer (Anti-AI)\t"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        2896,
+        256
+      ],
+      "id": "03f037a7-daf6-4a2f-a61c-94e1c791fd7f",
+      "name": "Model: Humanizer",
+      "credentials": {
+        "groqApi": {
+          "id": "JBRYM5gu3IDQnp1X",
+          "name": "Groq account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "https://docs.google.com/spreadsheets/d/1fuyLJnccoIiyDz2qDQzPGYEcO14q5GfEXmOZ27etBn0/edit?gid=0#gid=0",
+          "mode": "url"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1fuyLJnccoIiyDz2qDQzPGYEcO14q5GfEXmOZ27etBn0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Brand": "={{ $('Brand Config').item.json.brand }}",
+            "Primary Keyword:": "={{ $('AI: Keyword Researcher').item.json.output.primary }}",
+            "Secondary Keywords": "={{ $('AI: Keyword Researcher').item.json.output.secondary }}",
+            "SEO Title": "={{ $('AI: Content Planner').item.json.output.title }}",
+            "Meta Description": "={{ $('AI: Content Planner').item.json.output.meta_description }}",
+            "Outline:": "={{ $('AI: Content Planner').item.json.output.outline }}",
+            "Draft Content (EEAT):": "={{ $('AI: EEAT Writer').item.json.text }}",
+            "Humanized Content (Final): ": "={{ $json.text }}",
+            "Status:": "Draft",
+            "log Date/Time:": "={{ $now }}"
+          },
+          "matchingColumns": [
+            "Brand"
+          ],
+          "schema": [
+            {
+              "id": "log Date/Time:",
+              "displayName": "log Date/Time:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Date/Time:",
+              "displayName": "Date/Time:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Brand",
+              "displayName": "Brand",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Primary Keyword:",
+              "displayName": "Primary Keyword:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Secondary Keywords",
+              "displayName": "Secondary Keywords",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "SEO Title",
+              "displayName": "SEO Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Meta Description",
+              "displayName": "Meta Description",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Outline:",
+              "displayName": "Outline:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Draft Content (EEAT):",
+              "displayName": "Draft Content (EEAT):",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Humanized Content (Final): ",
+              "displayName": "Humanized Content (Final): ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Status:",
+              "displayName": "Status:",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        3472,
+        240
+      ],
+      "id": "489b1f64-1b13-4c49-a109-a8e261907764",
+      "name": "Sheets: Log Results\t",
+      "credentials": {
+        "googleApi": {
+          "id": "dN8fF3iq7w0VNBUI",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Highlights what you are configuring.\n",
+        "width": 192
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        128,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "e6374071-e822-414d-873a-27110a6e1717",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "##  Clean and descriptive.\n "
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        880,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "56b979fe-34db-44e7-af9c-1adf31a0f4ce",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Highlights the expertise-driven writing step.\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1712,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "1ee7bf59-b464-4a8c-826c-86d616fd4a67",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "## Focuses on titles and outlines.\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1264,
+        -48
+      ],
+      "typeVersion": 1,
+      "id": "ae6891bc-867f-49a5-9a7b-95659ba8ea9d",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Describes what the code is doing.\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2352,
+        16
+      ],
+      "typeVersion": 1,
+      "id": "a9b30d5a-d325-4b42-a158-45f71b5c82af",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Focuses on the \"low detection\" goal.\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2896,
+        48
+      ],
+      "typeVersion": 1,
+      "id": "b56a66d7-2998-45ac-bf48-380c1af4643a",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## Clear action for the final storage step.\n"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3376,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "7b3788c3-420f-4f45-9d1c-701d93dc5645",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## IMPROVEMENTS\n\n1. Writer Quality\n- Use conversational, human tone\n- Short paragraphs (2–3 lines)\n- Add H2, H3 headings\n- Include real-world examples\n- Avoid AI-like phrasing\n- Use keywords naturally (no stuffing)\n\n2. Strong Introduction\n- Start with a hook (problem / stat / bold claim)\n\n3. Content Depth\n- Add at least 2 real-world examples or mini case studies\n- Make content actionable, not just theoretical\n\n4. Humanizer Upgrade\n- Remove robotic tone\n- Simplify sentences\n- Add natural flow and slight personality\n\n5. Conclusion Section\n- Summarize key points\n- Add actionable takeaway\n- Include soft CTA\n\n6. Formatting\n- Clean structure (headings, spacing, bullet points)\n- Improve readability\n\n7. Reliability\n- Add output checks\n- Retry if response is empty\n- Prevent workflow failure\n\n8. Storage Improvement\n- Store title, keywords, and content\n- Prepare for future SEO metadata\n\n9. Future Upgrade (SEO Optimizer)\n- Add meta title (CTR-focused)\n- Add meta description\n- Add internal links\n- Add FAQs",
+        "height": 1072,
+        "width": 448
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3888,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "7e807f51-eac3-4df7-a043-fb0c8c23f800",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "path": "42b26a13-b276-4158-8834-06dfe7bebc4c",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        192
+      ],
+      "id": "ae4d7d03-19f8-47a5-8f55-67d24310d935",
+      "name": "Webhook",
+      "webhookId": "42b26a13-b276-4158-8834-06dfe7bebc4c"
+    }
+  ],
+  "pinData": {
+    "Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "localhost:5678",
+            "connection": "keep-alive",
+            "cache-control": "max-age=0",
+            "sec-ch-ua": "\"Chromium\";v=\"146\", \"Not-A.Brand\";v=\"24\", \"Google Chrome\";v=\"146\"",
+            "sec-ch-ua-mobile": "?0",
+            "sec-ch-ua-platform": "\"Windows\"",
+            "upgrade-insecure-requests": "1",
+            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36",
+            "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+            "sec-fetch-site": "none",
+            "sec-fetch-mode": "navigate",
+            "sec-fetch-user": "?1",
+            "sec-fetch-dest": "document",
+            "accept-encoding": "gzip, deflate, br, zstd",
+            "accept-language": "en-US,en;q=0.9,vi;q=0.8",
+            "cookie": "rl_page_init_referrer=RudderEncrypt%3AU2FsdGVkX1%2FDwpNeYya2oMBgARrNhK2M2aowdW9xj0Q%3D; rl_page_init_referring_domain=RudderEncrypt%3AU2FsdGVkX1%2BnM7OLK2KDHFDGT28EhkIx33MlDDT%2FG0A%3D; ajs_anonymous_id=cd63874b-ca07-44ce-be09-21a3c834d4eb; rl_anonymous_id=RudderEncrypt%3AU2FsdGVkX18%2Ba%2FOMpes79ND0ho2rWupOTgfhK9K07yBadkGgMG%2BEEcjsy0gzpC8EErGPnvcaCeinAl%2B4cUDFiw%3D%3D; rl_user_id=RudderEncrypt%3AU2FsdGVkX1%2B%2BcWYHQ%2F7fx4R3fUjnvCH%2FXLfFbvvGnuoV9UW%2Bc8gbpDMZtIZfcyXR2PvE2fh6qB0BUIqf8MEeQNz0H0k9%2BfgGKMcg8rk8gr4tA2I7ve%2FT3RqeiBOKMrHQyxn1ddaUlspLK3oXvXqGudtDMNQng3AO9VeLN82xJD0%3D; rl_trait=RudderEncrypt%3AU2FsdGVkX19AiAqlU6obY%2FuA2zM7TGsA6rJSNJnxTIIHSh1CTsCkaAscj8FwsB1W37OnKE4gFwL3JKqu2c%2FQGd2kC7BOjdKmYDH5nP7wOm%2BLaDmCENcZbXBo85mye3ryv0A3QK7%2BpBrAC0aiMkvrmwqro%2BnuLM9qft7Psrdtwa8%3D; rl_session=RudderEncrypt%3AU2FsdGVkX1%2FKaI%2F8WDn4iAQ0P9GmlUxlMd%2Fmq22MnW7PoNgvM99a6EUFrU%2B74B4DXZxNhInTx5bCtIz3cIXjGrtzndEEJgt8rI8Nrw%2FPb3c3cXDqEFPUfWurHQ2pfP4yzmGnd2oENA62Aez8FWdj%2FA%3D%3D; ph_phc_4URIAm1uYfJO7j8kWSe0J8lc8IqnstRLS7Jx8NcakHo_posthog=%7B%22%24device_id%22%3A%22019c4dd8-f222-7414-af13-0ccc7f22e45f%22%2C%22distinct_id%22%3A%2294c313174ea1c254bf84c16eaaa82cd117a864c2d5c1a079ab7a0760c8fe35fc%23d943b810-2eeb-46cd-9313-e1166823348a%22%2C%22%24sesid%22%3A%5B1774437801251%2C%22019d24ad-5daa-7e9c-8eaf-82615c246579%22%2C1774436834720%5D%2C%22%24epp%22%3Atrue%2C%22%24initial_person_info%22%3A%7B%22r%22%3A%22%24direct%22%2C%22u%22%3A%22http%3A%2F%2Flocalhost%3A5678%2Fhome%2Fworkflows%22%7D%2C%22%24user_state%22%3A%22identified%22%7D",
+            "if-none-match": "W/\"22-6OS7cK0FzqnV2NeDHdOSGS1bVUs\""
+          },
+          "params": {},
+          "query": {},
+          "body": {},
+          "webhookUrl": "http://localhost:5678/webhook/42b26a13-b276-4158-8834-06dfe7bebc4c",
+          "executionMode": "production"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Brand Config": {
+      "main": [
+        [
+          {
+            "node": "AI: Keyword Researcher",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Keywords": {
+      "main": [
+        [
+          {
+            "node": "AI: Content Planner",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse Plan": {
+      "main": [
+        [
+          {
+            "node": "AI: EEAT Writer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI: Keyword Researcher",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI: Content Planner",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI: Keyword Researcher": {
+      "main": [
+        [
+          {
+            "node": "Parse Keywords",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: Keywords": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI: Keyword Researcher",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI: Content Planner": {
+      "main": [
+        [
+          {
+            "node": "Parse Plan",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: Planner": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI: Content Planner",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI: EEAT Writer": {
+      "main": [
+        [
+          {
+            "node": "Extract: Draft Content\t",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: Writer": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI: EEAT Writer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract: Draft Content\t": {
+      "main": [
+        [
+          {
+            "node": "Format: Content Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format: Content Data": {
+      "main": [
+        [
+          {
+            "node": "AI: Humanizer (Anti-AI)\t",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI: Humanizer (Anti-AI)\t": {
+      "main": [
+        [
+          {
+            "node": "Sheets: Log Results\t",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Model: Humanizer": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI: Humanizer (Anti-AI)\t",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Brand Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "bafd6df7-fa3d-4d98-ad0e-2be4449f6042",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "94c313174ea1c254bf84c16eaaa82cd117a864c2d5c1a079ab7a0760c8fe35fc"
+  },
+  "id": "EBiXH0ZGOJ240Y7P",
+  "tags": []
+}
